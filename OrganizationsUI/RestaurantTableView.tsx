@@ -15,7 +15,6 @@ const RestaurantTableView = ({ navigation }: { navigation: any }) => {
     )
 }
 
-
 const styles = StyleSheet.create({
     map:{
         flex: 1,
