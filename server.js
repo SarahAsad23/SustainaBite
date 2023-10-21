@@ -12,7 +12,7 @@ var bodyparser = require('body-parser');
 var session = require('express-session');
 
 // include the mysql module
-var mysql = require("mysql2");
+var mysql = require("mysql");
 
 // Bcrypt library for comparing password hashes
 const bcrypt = require('bcrypt');
@@ -27,9 +27,9 @@ var con = mysql.createConnection({
   host: "34.71.5.117",
   user: "test",               // replace with the database for the app
   password: "test",
-  database: "sustainabite"
+  database: "sustainabite",
   // replace with our database password
-//   port: 3306
+  port: 3306
 });
 
 con.connect(function(err) {
