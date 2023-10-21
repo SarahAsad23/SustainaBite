@@ -2,16 +2,16 @@ import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
-import NewUserScreen from './OrganizationsUI/NewUser';
+//screens 
+import NewUserScreen from './NewUser';
 
 const Stack = createNativeStackNavigator(); 
 
 export default function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
-        <Stack.Screen name="newUser" component={NewUserScreen} options={{headerShown: false}}></Stack.Screen>
-
+      <Stack.Navigator initialRouteName='newUser'>
+        <Stack.Screen name="newUser" component={NewUserScreen} options={{title: "Register New User"}}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );
