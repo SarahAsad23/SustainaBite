@@ -1,11 +1,19 @@
 import React from "react";
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native'; 
 
+import RegisterRes from "./RestaurantUI/RegisterRes";
+
 const NewUserScreen = ({navigation}: {navigation:any}) => {
+
+    const handleResRegistration = () => {
+        // Navigate to the "RegisterRes" screen when registering as a restaurant
+        navigation.navigate('RegisterRes');
+      };
+
     return(
         <View> 
             
-            <TouchableOpacity style={styles.touchStyle1}>
+            <TouchableOpacity style={styles.touchStyle1} onPress={handleResRegistration}>
                 <Text style={styles.textStyle}>Register as Restaurant</Text>
             </TouchableOpacity>
 
