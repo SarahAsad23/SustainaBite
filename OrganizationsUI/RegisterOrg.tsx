@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import axios from 'axios';
 
 const RegisterOrg = ({ navigation }: { navigation: any }) => {
   const [organizationName, setOrganizationName] = useState('');
@@ -8,7 +9,9 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  fetch("/postRegisterAccount/" + "organization", {
+  /*
+  const register =  () => {
+    fetch("/postRegisterAccount/" + "organization", {
       method: "POST",
       headers: {
         Accept: "application/json",
@@ -33,6 +36,34 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
           // ADD THIS THROW error
             throw error;
       });
+  }
+  */
+  
+  const register =  () => {
+    axios.post("/postRegisterAccount/organization", {
+      name: organizationName,
+      capacity: capacity,
+      address: address,
+      username: username,
+      password: password,
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      }
+    })
+    .then((response) => {
+      console.log(response.data);
+      if (response.data.status === "success") {
+        navigation.navigate('AddMenu'); 
+      }
+    })
+    .catch(function (error) {
+      console.log('There has been a problem with your Axios request: ' + error.message);
+      throw error;
+    });
+  }
+  
 
   return (
     <View style={styles.container}>
@@ -83,7 +114,7 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={register}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </View>

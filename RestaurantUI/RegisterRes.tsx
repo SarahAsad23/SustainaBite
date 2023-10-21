@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios";
+
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 
 const RegisterRes = ({ navigation }: { navigation: any }) => {
@@ -40,9 +40,6 @@ const RegisterRes = ({ navigation }: { navigation: any }) => {
           // ADD THIS THROW error
             throw error;
       });
-
-
-    
   }
   
   const [restaurantName, setRestaurantName] = useState('');
