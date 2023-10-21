@@ -76,7 +76,7 @@ app.get('/login', function(req,res){
 });
 
 //login details
-app.post('sendLoginDetails', function (req,res) {
+app.post('/sendLoginDetails', function (req,res) {
     let username = req.body.username;
     let password = req.body.password;
     

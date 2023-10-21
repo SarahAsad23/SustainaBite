@@ -22,15 +22,10 @@
     "mysql": "^2.18.1",
     "react": "18.2.0",
     "react-native": "0.72.6",
-<<<<<<< HEAD
-    "react-native-maps": "1.7.1",
-    "react-native-webview": "13.2.2",
-=======
     "react-native-image-crop-picker": "^0.40.0",
     "react-native-image-picker": "^7.0.1",
     "react-native-maps": "^1.8.0",
     "react-native-webview": "^13.6.2",
->>>>>>> eda49584cfbe46b428402b27dc3dc3f9a953f741
     "tesseract.js": "^5.0.2",
     "text-from-image": "^1.1.1",
     "typescript": "^5.1.3"
