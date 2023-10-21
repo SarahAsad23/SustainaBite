@@ -27,9 +27,9 @@ var con = mysql.createConnection({
   host: "34.71.5.117",
   user: "test",               // replace with the database for the app
   password: "test",
-  database: "sustainabite"
+  database: "sustainabite",
   // replace with our database password
-//   port: 3306
+  port: 3306
 });
 
 con.connect(function(err) {
