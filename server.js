@@ -27,9 +27,9 @@ var con = mysql.createConnection({
   host: "34.71.5.117",
   user: "test",               // replace with the database for the app
   password: "test",
-  database: "sustainabite"
+  database: "sustainabite",
   // replace with our database password
-//   port: 3306
+  port: 3306
 });
 
 con.connect(function(err) {
@@ -55,7 +55,7 @@ app.listen(9007, () => console.log('Listening on port 9007!'));
 
 // function to return the welcome page
 app.get('/',function(req, res) {
-  res.sendFile(__dirname + '/NewUser.tsx');
+  res.sendFile(__dirname + '/SharedUI/NewUser.tsx');
 });
 
 app.use(express.static('public'))
