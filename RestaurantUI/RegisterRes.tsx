@@ -2,6 +2,10 @@ import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 
 const RegisterRes = ({ navigation }: { navigation: any }) => {
+  const handleSubmit = () => {
+    navigation.navigate('AddMenu'); 
+  }
+  
   const [restaurantName, setRestaurantName] = useState('');
   const [address, setAddress] = useState('');
   const [username, setUsername] = useState('');
@@ -46,7 +50,7 @@ const RegisterRes = ({ navigation }: { navigation: any }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </View>
