@@ -104,7 +104,7 @@ app.post("/postRegisterAccount/:type", function(req,res) {
       var accType = req.params.type;
       console.log(reqBody);
       registerAccount(req,res,reqBody, accType);
-      res.json({status: accType});
+      res.json({status: "success"});
 });
 
 function registerAccount(req,res,reqBody, accType) {
