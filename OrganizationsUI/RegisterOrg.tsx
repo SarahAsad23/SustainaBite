@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 
@@ -8,37 +9,52 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
-  fetch("/postRegisterAccount/" + "organization", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: organizationName,
-        capacity: capacity,
-        address: address,
-        username: username,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log(responseData);
-        if (responseData.status == "success") {
-          navigation.navigate('AddMenu'); 
-        }
-      }).catch(function(error) {
-          console.log('There has been a problem with your fetch operation to register the organization: ' + error.message);
-          // ADD THIS THROW error
-            throw error;
-      });
+  const handleSubmit = async () => {
+      axios.post("http://10.253.64.216:9007/postRegisterAccount/" + "organization", {
+            name: organizationName,
+            address: address,
+            username: username,
+            password: password,
+            capacity: capacity
+          })
+          .then((response) => {
+            console.log(response);
+            console.log(response.status);
+            navigation.navigate('RestaurantTableView'); 
+          }).catch(error => console.log(error));
+    }
+
+  // fetch("../postRegisterAccount/" + "organization", {
+  //     method: "POST",
+  //     headers: {
+  //       Accept: "application/json",
+  //       "Content-Type": "application/json",
+  //     },
+  //     body: JSON.stringify({
+  //       name: organizationName,
+  //       capacity: capacity,
+  //       address: address,
+  //       username: username,
+  //       password: password,
+  //     }),
+  //   })
+  //     .then((response) => response.json())
+  //     .then((responseData) => {
+  //       console.log(responseData);
+  //       if (responseData.status == "success") {
+  //         navigation.navigate('AddMenu'); 
+  //       }
+  //     }).catch(function(error) {
+  //         console.log('There has been a problem with your fetch operation to register the organization: ' + error.message);
+  //         // ADD THIS THROW error
+  //           throw error;
+  //     });
 
   return (
     <View style={styles.container}>
       
       <View style={styles.inputContainer}>
-        <Text style={styles.label}>Restaurant Name</Text>
+        <Text style={styles.label}>Organization Name</Text>
         <TextInput
           style={styles.input}
           onChangeText={(text) => setOrganizationName(text)}
@@ -83,7 +99,7 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </View>
