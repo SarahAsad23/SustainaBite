@@ -1,43 +1,105 @@
 import React, { useState } from "react";
-import { Text, View, TextInput } from "react-native";
+import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 
-//*****PUSH CREDENTUALS TO TABLE*******
+const RegisterOrg = ({ navigation }: { navigation: any }) => {
+  const [organizationName, setOrganizationName] = useState('');
+  const [address, setAddress] = useState('');
+  const [capacity, setCapacity] = useState('');
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
 
-const RegisterOrg = ({navigation}: {navigation:any}) =>{
+  return (
+    <View style={styles.container}>
+      <View style={styles.row}>
+        <Text style={styles.label}>Organization Name</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(text) => setOrganizationName(text)}
+          value={organizationName}
+        />
+      </View>
 
-    const [organizationName, setOrganizationName] = useState('');
-    const [address, setAddress] = useState('');
-    const [capacity, setCapacity] = useState('');
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
+      <View style={styles.row}>
+        <Text style={styles.label}>Address</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(text) => setAddress(text)}
+          value={address}
+        />
+      </View>
 
-    return(
-        <View>
-            <Text>Organization Name</Text>
-            <TextInput onChangeText={(text) => setOrganizationName(text)} value={organizationName}/>
+      <View style={styles.row}>
+        <Text style={styles.label}>Capacity</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(text) => setCapacity(text)}
+          value={capacity}
+        />
+      </View>
 
-            <Text>Address</Text>
-            <TextInput onChangeText={(text) => setAddress(text)} value={address}></TextInput>
+      <View style={styles.row}>
+        <Text style={styles.label}>Username</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(text) => setUsername(text)}
+          value={username}
+        />
+      </View>
 
-            <Text>Capacity</Text>
-            <TextInput onChangeText={(text) => setCapacity(text)} value={capacity}></TextInput>
-            
-            <Text>Username</Text>
-            <Text>Password</Text>
+      <View style={styles.row}>
+        <Text style={styles.label}>Password</Text>
+        <TextInput
+          style={styles.input}
+          onChangeText={(text) => setPassword(text)}
+          value={password}
+          secureTextEntry={true}
+        />
+      </View>
 
+      <TouchableOpacity style={styles.button}>
+        <Text style={styles.buttonText}>Submit</Text>
+      </TouchableOpacity>
 
-
-        </View>
-
-        //name
-        
-        //address
-        //occupancy
-        //username
-        //password
-
-        //internally generate an ID
-    )
+    </View>
+  );
 }
 
-export default RegisterOrg; 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white', 
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 20, 
+    marginBottom: 20, // Increased space between rows
+  },
+  label: {
+    width: 120, // Fixed width for labels
+    fontSize: 16,
+    fontWeight: 'bold',
+  },
+  input: {
+    flex: 1,
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 5,
+    paddingHorizontal: 10,
+  },
+  button: {
+    borderWidth: 1,
+    padding: 15,
+    alignItems: 'center',
+    borderRadius: 5,
+    marginTop: 50,
+  },
+  buttonText: {
+    color: 'black', // Button text color
+    fontWeight: 'bold',
+  },
+});
+
+export default RegisterOrg;

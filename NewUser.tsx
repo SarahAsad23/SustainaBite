@@ -21,7 +21,7 @@ const NewUserScreen = ({navigation}: {navigation:any}) => {
             </TouchableOpacity>
 
             <TouchableOpacity style={styles.touchStyle2} onPress={handleOrgRegistration}>
-                <Text style={styles.textStyle}>Register as Organizatin</Text>
+                <Text style={styles.textStyle}>Register as Organization</Text>
             </TouchableOpacity>
         </View>
     )
