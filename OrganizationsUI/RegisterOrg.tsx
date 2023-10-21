@@ -2,6 +2,12 @@ import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 
 const RegisterOrg = ({ navigation }: { navigation: any }) => {
+
+const handleSubmit = () => {
+    navigation.navigate('MapScreen');
+}
+
+
   const [organizationName, setOrganizationName] = useState('');
   const [address, setAddress] = useState('');
   const [capacity, setCapacity] = useState('');
@@ -56,7 +62,7 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 
