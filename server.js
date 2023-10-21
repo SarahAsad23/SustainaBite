@@ -55,7 +55,7 @@ app.listen(9007, () => console.log('Listening on port 9007!'));
 
 // function to return the welcome page
 app.get('/',function(req, res) {
-  res.sendFile(__dirname + '/NewUser.tsx');
+  res.sendFile(__dirname + '/SharedUI/NewUser.tsx');
 });
 
 app.use(express.static('public'))

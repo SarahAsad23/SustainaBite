@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
 
 const AddMenu = ({navigation}: {navigation: any}) =>{
@@ -10,5 +10,10 @@ const AddMenu = ({navigation}: {navigation: any}) =>{
 
     )
 }
+
+const styles = StyleSheet.create({
+    
+});
+
 
 export default AddMenu; 
