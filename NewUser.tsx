@@ -1,14 +1,17 @@
 import React from "react";
 import {TouchableOpacity, View, Text, StyleSheet} from 'react-native'; 
 
-import RegisterRes from "./RestaurantUI/RegisterRes";
-
 const NewUserScreen = ({navigation}: {navigation:any}) => {
 
     const handleResRegistration = () => {
         // Navigate to the "RegisterRes" screen when registering as a restaurant
         navigation.navigate('RegisterRes');
       };
+
+    const handleOrgRegistration = () => {
+    // Navigate to the "RegisterRes" screen when registering as a restaurant
+    navigation.navigate('RegisterOrg');
+    };  
 
     return(
         <View> 
@@ -17,8 +20,8 @@ const NewUserScreen = ({navigation}: {navigation:any}) => {
                 <Text style={styles.textStyle}>Register as Restaurant</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.touchStyle2}>
-                <Text style={styles.textStyle}>Register as Organizatin</Text>
+            <TouchableOpacity style={styles.touchStyle2} onPress={handleOrgRegistration}>
+                <Text style={styles.textStyle}>Register as Organization</Text>
             </TouchableOpacity>
         </View>
     )
