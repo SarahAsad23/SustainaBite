@@ -12,7 +12,7 @@ var bodyparser = require('body-parser');
 var session = require('express-session');
 
 // include the mysql module
-var mysql = require("mysql");
+var mysql = require("mysql2");
 
 // Bcrypt library for comparing password hashes
 const bcrypt = require('bcrypt');
