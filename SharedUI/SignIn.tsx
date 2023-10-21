@@ -1,10 +1,54 @@
 import React, {useState} from "react";
+import axios from 'axios';
+
+
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from "react-native";
 
 
 const SignIn = ({navigation}: {navigation: any}) => {
     const [username, setUsername] = useState('');
    const [password, setPassword] = useState('');
+
+   const logIn = () => {
+    fetch("/sendLoginDetailst", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ username: username, password : password }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(responseData);
+        if (responseData.status == "success") {
+          navigation.navigate('AddMenu'); 
+        }
+      }).catch(function(error) {
+          console.log('There has been a problem with your fetch operation to sign into the app: ' + error.message);
+          // ADD THIS THROW error
+            throw error;
+      });
+      // axios.get('/sendLoginDetails')
+      //   .then(function(response) {
+      //       // handle response
+      //       if (response.data.status == "fail") {
+      //           //log in failed
+      //           //TO DO: add message alert saying password or username incorrect
+      //       } else {
+      //         var type = response.data.status; //could be restaurant or organization
+      //         if (type == "restaurant") {
+      //           navigation.navigate('RegisterRes');
+      //         } else {
+      //           navigation.navigate('RegisterOrg');
+      //         }
+      //       }
+      //   }).catch(function(error) {
+      //       // handle error
+      //   }).finally(function() {
+      //       // always executes at the last of any API call
+      //   });
+   }
 
     return(
         <View style={styles.container}> 

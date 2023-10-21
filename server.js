@@ -53,12 +53,12 @@ app.use(session({
 // server listens on port 9007 for incoming connections
 app.listen(9007, () => console.log('Listening on port 9007!'));
 
-// function to return the welcome page
-app.get('/',function(req, res) {
-  res.sendFile(__dirname + '/SharedUI/NewUser.tsx');
-});
+// // function to return the welcome page
+// app.get('/',function(req, res) {
+//   res.sendFile(__dirname + '/NewUser.tsx');
+// });
 
-app.use(express.static('public'))
+// app.use(__dirname, express.static(__dirname))
 
 //get login page
 app.get('/login', function(req,res){
@@ -80,26 +80,48 @@ app.post('/sendLoginDetails', function (req,res) {
     let username = req.body.username;
     let password = req.body.password;
     
-      con.query("SELECT * FROM account_information WHERE user_name = ?",[acc_username], function(err,rows,fields) {
+    var found = false;
+      con.query("SELECT * FROM restaurant_registration WHERE username = ?",[username], function(err,rows,fields) {
           if(err) throw err;
           if (rows.length == 0) {
-            console.log("No entries found");
-            res.json({status:"fail"});
+            console.log("No entries found in restaurants");
           } else {
             console.log("comparing");
             if (bcrypt.compareSync(password, rows[0].acc_password)) {
               req.session.user = username;
               console.log("Starting Session");
               req.session.value = 1;
-              
+              found = true;
               res.json({status: rows[0].acc_type});
               
             } else {
-              console.log("fail");
-              res.json({status: "fail"});
+              console.log("fail password for restaurants");
+            //   res.json({status: "fail"});
             }
           }
       });
+      if (!found) {
+        con.query("SELECT * FROM org_registration WHERE username = ?",[username], function(err,rows,fields) {
+                if(err) throw err;
+                if (rows.length == 0) {
+                    console.log("No entries found in organizations");
+                    res.json({status:"fail"});
+                } else {
+                    console.log("comparing");
+                    if (bcrypt.compareSync(password, rows[0].acc_password)) {
+                    req.session.user = username;
+                    console.log("Starting Session");
+                    req.session.value = 1;
+                    found = true;
+                    res.json({status: rows[0].acc_type});
+                    
+                    } else {
+                    console.log("fail password for restaurants");
+                    res.json({status: "fail"});
+                    }
+                }
+            });
+      }
 });
 
 //add new registered user
@@ -109,7 +131,6 @@ app.post("/postRegisterAccount/:type", function(req,res) {
       var accType = req.params.type;
       console.log(reqBody);
       registerAccount(req,res,reqBody, accType);
-      res.json({status: "success"});
 });
 
 function registerAccount(req,res,reqBody, accType) {
@@ -118,23 +139,27 @@ function registerAccount(req,res,reqBody, accType) {
     var username = reqBody.username;
     var password = reqBody.password; 
     var capacity;
-    if (accType == "rest") {
-        con.query("INSERT INTO account_information (acc_name, acc_address, acc_username, acc_password, acc_type) VALUES (?, ?, ?, ?)", [name, address, username, password],
+    if (accType == "restaurant") {
+        con.query("INSERT INTO restaurant_registration (username, password, name, address) VALUES (?, ?, ?, ?)", [username, password, name, address],
         function(err, rows, fields) {
             if(err) throw err;
             else {
               console.log("Inserted query!");
             }
         });
-    } else if (accType == "org") {
+        res.json({status: "success"});
+    } else if (accType == "organization") {
         capacity= reqBody.capacity;
-        con.query("INSERT INTO account_information (acc_name, acc_address, acc_username, acc_password, acc_type) VALUES (?, ?, ?, ?, ?)", [name, address, username, password, capacity],
+        con.query("INSERT INTO org_registration (username, password, name, address, occupancy) VALUES (?, ?, ?, ?, ?)", [username, password, name, address, occupancy],
         function(err, rows, fields) {
             if(err) throw err;
             else {
               console.log("Inserted query!");
             }
         });
+        res.json({status: "success"});
+    } else {
+        res.json({status: "fail"});
     }
 }
 

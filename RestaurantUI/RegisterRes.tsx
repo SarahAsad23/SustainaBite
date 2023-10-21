@@ -1,9 +1,48 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 
 const RegisterRes = ({ navigation }: { navigation: any }) => {
   const handleSubmit = () => {
-    navigation.navigate('AddMenu'); 
+    // axios.get('/postRegisterAccount/' + "restaurant")
+    //     .then(function(response) {
+    //         // handle response
+    //         if (response.data.status == "success") {
+    //             //log in success
+    //           navigation.navigate('AddMenu'); 
+    //         }
+    //     }).catch(function(error) {
+    //         // handle error
+    //     }).finally(function() {
+    //         // always executes at the last of any API call
+    //     });
+    fetch("/postRegisterAccount/" + "restaurant", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        name: restaurantName,
+        address: address,
+        username: username,
+        password: password,
+      }),
+    })
+      .then((response) => response.json())
+      .then((responseData) => {
+        console.log(responseData);
+        if (responseData.status == "success") {
+          navigation.navigate('AddMenu'); 
+        }
+      }).catch(function(error) {
+          console.log('There has been a problem with your fetch operation to register as restaurant: ' + error.message);
+          // ADD THIS THROW error
+            throw error;
+      });
+
+
+    
   }
   
   const [restaurantName, setRestaurantName] = useState('');
