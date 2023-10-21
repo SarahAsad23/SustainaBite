@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
 
 const RegisterOrg = ({ navigation }: { navigation: any }) => {
+
+const handleSubmit = () => {
+    navigation.navigate('MapScreen');
+}
+
   const [organizationName, setOrganizationName] = useState('');
   const [address, setAddress] = useState('');
   const [capacity, setCapacity] = useState('');
@@ -56,7 +61,7 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
 
@@ -74,10 +79,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     marginTop: 20, 
-    marginBottom: 20, // Increased space between rows
+    marginBottom: 20, 
   },
   label: {
-    width: 120, // Fixed width for labels
+    width: 120, 
     fontSize: 16,
     fontWeight: 'bold',
   },
@@ -97,7 +102,7 @@ const styles = StyleSheet.create({
     marginTop: 50,
   },
   buttonText: {
-    color: 'black', // Button text color
+    color: 'black', 
     fontWeight: 'bold',
   },
 });
