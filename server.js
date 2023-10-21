@@ -137,4 +137,3 @@ function registerAccount(req,res,reqBody, accType) {
 
 
 
-
