@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@google-cloud/vision": "^4.0.2",
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.15",
     "@types/react": "~18.2.14",
@@ -19,6 +20,7 @@
     "express-session": "^1.17.3",
     "googleapis": "^128.0.0",
     "mysql": "^2.18.1",
+    "openai": "^4.12.4",
     "react": "18.2.0",
     "react-native": "0.72.6",
     "react-native-maps": "^1.8.0",
