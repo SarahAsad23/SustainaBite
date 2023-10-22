@@ -1,6 +1,6 @@
 const fetch = require('node-fetch');
 
-function getData(foodName) {
+export function getData(foodName) {
     const params = {
         api_key: 'gpyve241cpK2G9ATVhApZKwygxMdsHkfgP1hK2Bt',
         query: foodName,
@@ -13,7 +13,7 @@ function getData(foodName) {
     return fetch(api_url).then(response => response.json())
 }
 
-function getNutrients(foodName) {
+export function getNutrients(foodName) {
     const dict = {};
 const allNutrients = getData(foodName).then(data => {
     //console.log(data);
@@ -33,3 +33,4 @@ const allNutrients = getData(foodName).then(data => {
 });
     return allNutrients;
 }
+

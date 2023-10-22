@@ -161,99 +161,75 @@ app.post('/sendLoginDetails', function (req,res) {
       
 });
 
-//add new registered user
-app.post("/postRegisterAccount/:type", function(req,res) {
-      console.log("posting");
-      var reqBody = req.body;
-      var accType = req.params.type;
-      console.log(reqBody);
-      registerAccount(req,res,reqBody, accType);
-});
+// Add new registered user
+app.post("/postRegisterAccount/:type", function (req, res) {
+  console.log("Posting");
+  const reqBody = req.body;
+  const accType = req.params.type;
+  console.log(reqBody);
 
-app.get("/getRestaurants", function(req, res) {
-  const array = [];
-    con.query("SELECT id, name, address FROM restaurant_registration WHERE id in (SELECT res_id FROM menu WHERE available = TRUE)", function(err,rows,fields) {
-      if(err) {
-        res.json({status: "fail"});
-        throw err;
-      }
-      else {
-        if (rows.length == 0) {
-            console.log("No entries found in restaurants");
-            res.json({status: "fail"});
-        } else {
-            for (let i = 0; i < rows.length; i++) {
-              array.push(rows[i]);
-            }
-        }
-        res.json({restaurants: array});
-      }
-    })
-});
-
-app.get("/getMenu/:resID", function (req, res) {
-  const array = [];
-  con.query("SELECT * FROM menu WHERE available = TRUE and res_id = ?", [resID], function(err,rows,fields) {
-    if (err) {
-      throw err;
+  registerAccount(req, res, reqBody, accType, (status) => {
+    if (status === "success") {
+      res.json({ status: "success" });
     } else {
-      if (rows.length ==0) {
-        console.log("No menu found for that restaurant");
-        res.json({status: "fail"});
+      res.json({ status: "fail" });
+    }
+  });
+});
+
+// Get restaurants with available menus
+app.get("/getRestaurants", function (req, res) {
+  const array = [];
+  con.query(
+    "SELECT id, name, address FROM restaurant_registration WHERE id IN (SELECT res_id FROM menu WHERE available = TRUE)",
+    function (err, rows, fields) {
+      if (err) {
+        console.error(err);
+        return res.json({ status: "fail" });
+      }
+      if (rows.length === 0) {
+        console.log("No entries found in restaurants");
+        return res.json({ status: "fail" });
       } else {
-        for (let i = 0;i < rows.length; i++) {
-          if (available) {
-            array.push({item: rows[i].item, servings: rows[i].servings, ingredients: rows[i].ingredients, available: rows[i].available});
-          }
-          
+        for (let i = 0; i < rows.length; i++) {
+          array.push(rows[i]);
         }
       }
-      res.json({menu: array});
+      return res.json({ restaurants: array });
     }
-  })
+  );
 });
 
-app.post("/postMenu", function (req, res) {
-  let menu = req.body.menu;
-  for (let i = 0; i < menu.length; i++) {
-    con.query("INSERT INTO menu (item, ingredients) VALUES (?, ?)", [menu[i].item, menu[i].ingredients], function(err,rows,fields) {
-      if(err) throw err;
-            else {
-              console.log("Inserted query!");
-            }
-        });
-        res.json({status: "success"});
-  }});
+// app.post("/postMenu")
 
-function registerAccount(req,res,reqBody, accType) {
-    var name = reqBody.name;
-    var address = reqBody.address;
-    var username = reqBody.username;
-    var password = reqBody.password; 
-    var capacity = reqBody.capacity;
-    if (accType == "restaurant") {
-        con.query("INSERT INTO restaurant_registration (username, password, name, address) VALUES (?, ?, ?, ?)", [username, password, name, address],
-        function(err) {
-            if(err) throw err;
-            else {
-              console.log("Inserted query!");
-            }
-        });
-        res.json({status: "success"});
-    } else if (accType == "organization") {
-        capacity= reqBody.capacity;
-        con.query("INSERT INTO org_registration (username, password, name, address, occupancy) VALUES (?, ?, ?, ?, ?)", [username, password, name, address, capacity],
-        function(err, rows, fields) {
-            if(err) throw err;
-            else {
-              console.log("Inserted query!");
-            }
-        });
-        res.json({status: "success"});
+function registerAccount(req, res, reqBody, accType) {
+  var name = reqBody.name;
+  var address = reqBody.address;
+  var username = reqBody.username;
+  var password = reqBody.password;
+  var capacity = reqBody.capacity;
+
+  var query = ""; // Initialize the query string
+
+  if (accType === "restaurant") {
+    query = "INSERT INTO restaurant_registration (username, password, name, address) VALUES (?, ?, ?, ?)";
+  } else if (accType === "organization") {
+    query = "INSERT INTO org_registration (username, password, name, address, occupancy) VALUES (?, ?, ?, ?, ?)";
+  } else {
+    return res.json({ status: "fail" }); // Handle the "else" case here
+  }
+
+  con.query(query, [username, password, name, address, capacity], function (err) {
+    if (err) {
+      console.error(err);
+      return res.json({ status: "fail" });
     } else {
-        res.json({status: "fail"});
+      console.log("Inserted query!");
+      return res.json({ status: "success" });
     }
+  });
 }
+
 
 
 

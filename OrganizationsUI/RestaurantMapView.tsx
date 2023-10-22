@@ -3,7 +3,7 @@ import { StyleSheet, View, Alert, Button } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import axios from 'axios';
 
-const RestaurantMapView = () => {
+const RestaurantMapView = ({navigation}: {navigation:any}) => {
   const [restaurants, setRestaurants] = useState([]);
 
   useEffect(() => {
@@ -67,6 +67,29 @@ const RestaurantMapView = () => {
     }
   };
 
+  const callServer = async (restaurantID) => {
+    try {
+      const response = await axios.get(`http://10.253.87.12:9007/getMenu/${restaurantID}`);
+      if (response.data.status === 'fail') {
+        Alert.alert('No menu available for this restaurant', null, [{ text: 'OK' }]);
+      } else {
+        // Process the menu data as needed
+        const menuData = response.data.menu;
+        // Navigate to the 'MarkerDetails' screen, pass the restaurant and menu data
+        navigation.navigate('MarkerDetails', { restaurant: restaurants[restaurantID], menu: menuData });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  };
+  
+  const handleMarkerPress = (restaurant) => {
+    // Navigate to a new screen, e.g., 'Markers', and pass the restaurant data as a parameter
+
+    navigation.navigate('Markers', { restaurant });
+  };
+
+
   return (
     <View style={styles.container}>
       <MapView
@@ -90,6 +113,7 @@ const RestaurantMapView = () => {
               longitude: restaurant.longitude,
             }}
             title={restaurant.name}
+            onPress={() => handleMarkerPress(restaurant)}
           />
         ))}
       </MapView>
