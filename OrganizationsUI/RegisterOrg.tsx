@@ -24,32 +24,6 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
           }).catch(error => console.log(error));
     }
 
-  // fetch("../postRegisterAccount/" + "organization", {
-  //     method: "POST",
-  //     headers: {
-  //       Accept: "application/json",
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify({
-  //       name: organizationName,
-  //       capacity: capacity,
-  //       address: address,
-  //       username: username,
-  //       password: password,
-  //     }),
-  //   })
-  //     .then((response) => response.json())
-  //     .then((responseData) => {
-  //       console.log(responseData);
-  //       if (responseData.status == "success") {
-  //         navigation.navigate('AddMenu'); 
-  //       }
-  //     }).catch(function(error) {
-  //         console.log('There has been a problem with your fetch operation to register the organization: ' + error.message);
-  //         // ADD THIS THROW error
-  //           throw error;
-  //     });
-
   return (
     <View style={styles.container}>
       
