@@ -211,7 +211,7 @@ app.get("/getMenu/:resID", function (req, res) {
   })
 });
 
-app.post("/postMenu")
+// app.post("/postMenu")
 
 function registerAccount(req,res,reqBody, accType) {
     var name = reqBody.name;
