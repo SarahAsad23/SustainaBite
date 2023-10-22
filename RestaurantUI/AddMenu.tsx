@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity, TextInput} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, TextInput, Button, Image} from "react-native";
 
 import * as ImagePicker from 'expo-image-picker';
 import { recognizeText } from "./text-recognition";
@@ -52,19 +52,20 @@ const AddMenu = ({ navigation }: { navigation: any }) => {
       });
   };
 
-    return (
-        <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-          <TouchableOpacity style={s.touch} onPress={addImage}> 
-            <Text style={s.text}>Choose Photo</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={s.touch} onPress={recognizeText}>
-          <Text style={s.text}> submit</Text>
-          </TouchableOpacity>
-
-          <TextInput placeholder=""></TextInput>
-        </View>
-      );
+  return (
+    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+      {photo && (
+        <>
+          <Image
+            source={{ uri: photo.uri }}
+            style={{ width: 300, height: 300 }}
+          />
+          <Button title="Upload Photo" onPress={handleUploadPhoto} />
+        </>
+      )}
+      <Button title="Choose Photo" onPress={addImage} />
+    </View>
+  );
     };
 
 const s = StyleSheet.create({
@@ -87,15 +88,3 @@ const s = StyleSheet.create({
 
 export default AddMenu;
 
-
-/*
-{photo && (
-            <>
-              <Image
-                source={{ uri: photo.uri }}
-                style={{ width: 300, height: 300 }}
-              />
-              <Button title="Upload Photo" onPress={handleUploadPhoto} />
-            </>
-          )}
-*/
