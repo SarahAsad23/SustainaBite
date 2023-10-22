@@ -171,6 +171,27 @@ app.post("/postRegisterAccount/:type", function(req,res) {
       registerAccount(req,res,reqBody, accType);
 });
 
+app.get("/getRestaurants", function(req, res) {
+  const array = [];
+    con.query("SELECT name, address FROM restaurant_registration WHERE id = res_id AND res_id in (SELECT res_id FROM menu WHERE available = TRUE)", function(err,rows,fields) {
+      if(err) {
+        res.json({status: "fail"});
+        throw err;
+      }
+      else {
+        if (rows.length == 0) {
+            console.log("No entries found in restaurants");
+            res.json({status: "fail"});
+        } else {
+            for (let i = 0; i < rows; i++) {
+              array.push(rows[i]);
+            }
+        }
+        res.json({restaurants: array});
+      }
+    })
+});
+
 function registerAccount(req,res,reqBody, accType) {
     var name = reqBody.name;
     var address = reqBody.address;
