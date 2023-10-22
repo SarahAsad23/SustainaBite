@@ -1,8 +1,10 @@
 // include the express modules
 var express = require("express");
 
+
 // create an express application
 var app = express();
+
 const url = require('url');
 
 // helps in extracting the body portion of an incoming request stream
@@ -19,6 +21,9 @@ const bcrypt = require('bcrypt');
 
 const { google } = require('googleapis');
 
+//middleware for uploading images
+const multer = require('multer');
+
 //session value
 var session;
 const key = require('./client_secret_979630756564-q1hslh7tt4s9hdpj6n1v3gkd0hf5bmtj.apps.googleusercontent.com.json'); // Replace with the path to your JSON key file
@@ -28,8 +33,6 @@ var con = mysql.createConnection({
   user: "test",               // replace with the database for the app
   password: "test",
   database: "sustainabite",
-  // replace with our database password
-  port: 3306
 });
 
 con.connect(function(err) {
@@ -50,8 +53,38 @@ app.use(session({
 }
 ));
 
+//where to store image uploaded and what name to give it
+const storage = multer.diskStorage({
+  destination(req, file, callback) {
+    callback(null, './images');
+  },
+  filename(req, file, callback) {
+    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+//request with picture to be uploaded
+app.post('/api/upload', upload.array('photo', 3), (req, res) => {
+  console.log('file', req.files);
+  console.log('body', req.body);
+  res.status(200).json({
+    message: 'success!',
+  });
+});
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log(
+    `server is running at http://localhost:${process.env.PORT || 3000}`
+  );
+});
+
+// app.get("/", express.static(path.join(__dirname, "./public")));
+
+
 // server listens on port 9007 for incoming connections
-app.listen(9007, () => console.log('Listening on port 9007!'));
+app.listen(9007, "10.253.64.216" , () => console.log('Listening on port 9007!'));
 
 // // function to return the welcome page
 // app.get('/',function(req, res) {
@@ -80,26 +113,27 @@ app.post('/sendLoginDetails', function (req,res) {
     let username = req.body.username;
     let password = req.body.password;
     
-    var found = false;
+    found = false;
       con.query("SELECT * FROM restaurant_registration WHERE username = ?",[username], function(err,rows,fields) {
           if(err) throw err;
           if (rows.length == 0) {
             console.log("No entries found in restaurants");
           } else {
-            console.log("comparing");
-            if (bcrypt.compareSync(password, rows[0].acc_password)) {
+            console.log("comparing " + password + " with " + rows[0].password);
+            if (rows[0].password === password) {
               req.session.user = username;
               console.log("Starting Session");
               req.session.value = 1;
               found = true;
-              res.json({status: rows[0].acc_type});
+            //   res.json({status: rows[0].acc_type});
+            res.json({status: "restaurant"});
               
             } else {
               console.log("fail password for restaurants");
             //   res.json({status: "fail"});
             }
           }
-      });
+          console.log(found);
       if (!found) {
         con.query("SELECT * FROM org_registration WHERE username = ?",[username], function(err,rows,fields) {
                 if(err) throw err;
@@ -107,21 +141,25 @@ app.post('/sendLoginDetails', function (req,res) {
                     console.log("No entries found in organizations");
                     res.json({status:"fail"});
                 } else {
-                    console.log("comparing");
-                    if (bcrypt.compareSync(password, rows[0].acc_password)) {
+                    console.log("comparing " + password + " with " + rows[0].password);
+                    if (rows[0].password === password) {
+                    // if (bcrypt.compareSync(password, rows[0].password)) {
                     req.session.user = username;
                     console.log("Starting Session");
                     req.session.value = 1;
                     found = true;
-                    res.json({status: rows[0].acc_type});
+                    // res.json({status: rows[0].acc_type});
+                    res.json({status: "organization"});
                     
                     } else {
-                    console.log("fail password for restaurants");
+                    console.log("fail password for orgs");
                     res.json({status: "fail"});
                     }
                 }
             });
       }
+      });
+      
 });
 
 //add new registered user
@@ -133,15 +171,36 @@ app.post("/postRegisterAccount/:type", function(req,res) {
       registerAccount(req,res,reqBody, accType);
 });
 
+app.get("/getRestaurants", function(req, res) {
+  const array = [];
+    con.query("SELECT name, address FROM restaurant_registration WHERE id = res_id AND res_id in (SELECT res_id FROM menu WHERE available = TRUE)", function(err,rows,fields) {
+      if(err) {
+        res.json({status: "fail"});
+        throw err;
+      }
+      else {
+        if (rows.length == 0) {
+            console.log("No entries found in restaurants");
+            res.json({status: "fail"});
+        } else {
+            for (let i = 0; i < rows; i++) {
+              array.push(rows[i]);
+            }
+        }
+        res.json({restaurants: array});
+      }
+    })
+});
+
 function registerAccount(req,res,reqBody, accType) {
     var name = reqBody.name;
     var address = reqBody.address;
     var username = reqBody.username;
     var password = reqBody.password; 
-    var capacity;
+    var capacity = reqBody.capacity;
     if (accType == "restaurant") {
         con.query("INSERT INTO restaurant_registration (username, password, name, address) VALUES (?, ?, ?, ?)", [username, password, name, address],
-        function(err, rows, fields) {
+        function(err) {
             if(err) throw err;
             else {
               console.log("Inserted query!");
@@ -150,7 +209,7 @@ function registerAccount(req,res,reqBody, accType) {
         res.json({status: "success"});
     } else if (accType == "organization") {
         capacity= reqBody.capacity;
-        con.query("INSERT INTO org_registration (username, password, name, address, occupancy) VALUES (?, ?, ?, ?, ?)", [username, password, name, address, occupancy],
+        con.query("INSERT INTO org_registration (username, password, name, address, occupancy) VALUES (?, ?, ?, ?, ?)", [username, password, name, address, capacity],
         function(err, rows, fields) {
             if(err) throw err;
             else {

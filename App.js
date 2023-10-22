@@ -6,9 +6,12 @@ import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import NewUserScreen from './SharedUI/NewUser';
 import RegisterOrg from './OrganizationsUI/RegisterOrg';
 import RegisterRes from './RestaurantUI/RegisterRes'; 
-import RestaurantMapView from './OrganizationsUI/RestaurantTableView';
+import RestaurantMapView from './OrganizationsUI/RestaurantMapView';
 import SignIn from './SharedUI/SignIn';
 import AddMenu from './RestaurantUI/AddMenu'
+import MarkerDetials from './OrganizationsUI/MarkerDetails';
+import RequestPage from './OrganizationsUI/RequestPage';
+
 
 const Stack = createNativeStackNavigator(); 
 
@@ -22,6 +25,8 @@ export default function App() {
         <Stack.Screen name="MapScreen" component={RestaurantMapView} options={{title: "Map View"}}></Stack.Screen> 
         <Stack.Screen name="SignIn" component={SignIn} options={{title: "Sign In"}}></Stack.Screen>
         <Stack.Screen name='AddMenu' component={AddMenu} options={{title: "Add Menu"}}></Stack.Screen>
+        <Stack.Screen name='Markers' component={MarkerDetials} options={{title:"marker"}}></Stack.Screen>
+        <Stack.Screen name='request' component={RequestPage} options={{title: "Request"}}></Stack.Screen>
       </Stack.Navigator>
     </NavigationContainer>
   );

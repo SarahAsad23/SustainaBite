@@ -9,26 +9,44 @@ const SignIn = ({navigation}: {navigation: any}) => {
     const [username, setUsername] = useState('');
    const [password, setPassword] = useState('');
 
-   const logIn = () => {
-    fetch("/sendLoginDetailst", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ username: username, password : password }),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log(responseData);
-        if (responseData.status == "success") {
-          navigation.navigate('AddMenu'); 
-        }
-      }).catch(function(error) {
-          console.log('There has been a problem with your fetch operation to sign into the app: ' + error.message);
-          // ADD THIS THROW error
-            throw error;
-      });
+   const logIn = async () => {
+    axios.post("http://10.253.64.216:9007/sendLoginDetails", {
+            username: username,
+            password: password
+          })
+          .then((response) => {
+            console.log(response);
+            if (response.data.status == "fail") {
+                //log in failed
+                //TO DO: add message alert saying password or username incorrect
+            } else {
+              var type = response.data.status; //could be restaurant or organization
+              if (type == "restaurant") {
+                navigation.navigate('AddMenu');
+              } else {
+                navigation.navigate('MapScreen');
+              }
+   }
+  }).catch(error => console.log(error));
+    // fetch("../sendLoginDetailst", {
+    //   method: "POST",
+    //   headers: {
+    //     Accept: "application/json",
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ username: username, password : password }),
+    // })
+    //   .then((response) => response.json())
+    //   .then((responseData) => {
+    //     console.log(responseData);
+    //     if (responseData.status == "success") {
+    //       navigation.navigate('AddMenu'); 
+    //     }
+    //   }).catch(function(error) {
+    //       console.log('There has been a problem with your fetch operation to sign into the app: ' + error.message);
+    //       // ADD THIS THROW error
+    //         throw error;
+    //   });
       // axios.get('/sendLoginDetails')
       //   .then(function(response) {
       //       // handle response
@@ -48,6 +66,10 @@ const SignIn = ({navigation}: {navigation: any}) => {
       //   }).finally(function() {
       //       // always executes at the last of any API call
       //   });
+      return (
+        <h1>
+          Hello!  </h1>
+      );
    }
 
     return(
@@ -72,7 +94,7 @@ const SignIn = ({navigation}: {navigation: any}) => {
             />
         </View>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity style={styles.button} onPress={logIn}>
             <Text style={styles.buttonText}>Submit</Text>
         </TouchableOpacity>
 

@@ -1,48 +1,27 @@
 import React, { useState } from "react";
-import axios from "axios";
+
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import axios from "axios";
 
 const RegisterRes = ({ navigation }: { navigation: any }) => {
   const handleSubmit = () => {
-    // axios.get('/postRegisterAccount/' + "restaurant")
-    //     .then(function(response) {
-    //         // handle response
-    //         if (response.data.status == "success") {
-    //             //log in success
-    //           navigation.navigate('AddMenu'); 
-    //         }
-    //     }).catch(function(error) {
-    //         // handle error
-    //     }).finally(function() {
-    //         // always executes at the last of any API call
-    //     });
-    fetch("/postRegisterAccount/" + "restaurant", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        name: restaurantName,
-        address: address,
-        username: username,
-        password: password,
-      }),
-    })
-      .then((response) => response.json())
-      .then((responseData) => {
-        console.log(responseData);
-        if (responseData.status == "success") {
-          navigation.navigate('AddMenu'); 
-        }
-      }).catch(function(error) {
-          console.log('There has been a problem with your fetch operation to register as restaurant: ' + error.message);
-          // ADD THIS THROW error
-            throw error;
+     axios.get('http://10.253.64.216:9007/postRegisterAccount/' + "restaurant")
+         .then(function(response) {
+             // handle response
+             if (response.data.status == "success") {
+                 //log in success
+               navigation.navigate('AddMenu'); 
+             }
+         }).catch(function(error) {
+             // handle error
+         }).finally(function() {
+             //always executes at the last of any API call
       });
+    };
+  
 
-
-    
+  const go = () =>{
+    navigation.navigate('AddMenu'); 
   }
   
   const [restaurantName, setRestaurantName] = useState('');
@@ -89,7 +68,7 @@ const RegisterRes = ({ navigation }: { navigation: any }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity style={styles.button} onPress={go}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </View>
