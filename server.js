@@ -202,7 +202,10 @@ app.get("/getMenu/:resID", function (req, res) {
         res.json({status: "fail"});
       } else {
         for (let i = 0;i < rows.length; i++) {
-          array.push({item: rows[i].item, servings: rows[i].servings, available: rows[i].available});
+          if (available) {
+            array.push({item: rows[i].item, servings: rows[i].servings, ingredients: rows[i].ingredients, available: rows[i].available});
+          }
+          
         }
       }
       res.json({menu: array});
@@ -210,7 +213,17 @@ app.get("/getMenu/:resID", function (req, res) {
   })
 });
 
-// app.post("/postMenu")
+app.post("/postMenu", function (req, res) {
+  let menu = req.body.menu;
+  for (let i = 0; i < menu.length; i++) {
+    con.query("INSERT INTO menu (item, ingredients) VALUES (?, ?)", [menu[i].item, menu[i].ingredients], function(err,rows,fields) {
+      if(err) throw err;
+            else {
+              console.log("Inserted query!");
+            }
+        });
+        res.json({status: "success"});
+  }});
 
 function registerAccount(req,res,reqBody, accType) {
     var name = reqBody.name;
