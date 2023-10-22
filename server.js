@@ -172,7 +172,7 @@ app.post("/postRegisterAccount/:type", function(req,res) {
 
 app.get("/getRestaurants", function(req, res) {
   const array = [];
-    con.query("SELECT id, name, address FROM restaurant_registration WHERE id = res_id AND res_id in (SELECT res_id FROM menu WHERE available = TRUE)", function(err,rows,fields) {
+    con.query("SELECT id, name, address FROM restaurant_registration WHERE id = A.id AND id in (SELECT res_id FROM menu WHERE available = TRUE) as A", function(err,rows,fields) {
       if(err) {
         res.json({status: "fail"});
         throw err;
