@@ -10,15 +10,19 @@ const MarkerDetails = ({ route }) => {
       <Text style={styles.menuTitle}>Menu:</Text>
       {menu ? (
         menu.map((menuItem, index) => (
-          <Text key={index} style={styles.menuItem}>
-            {menuItem.item}
-          </Text>
+          <View key={index}>
+            <Text style={styles.menuItem}>Item: {menuItem.item}</Text>
+            <Text style={styles.menuItem}>Ingredients: {menuItem.ingredients}</Text>
+            <Text style={styles.menuItem}>Servings: {menuItem.servings}</Text>
+          </View>
         ))
       ) : (
         <Text style={styles.menuItem}>No menu available</Text>
       )}
     </View>
   );
+  
+  
 };
 
 const styles = StyleSheet.create({

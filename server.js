@@ -193,7 +193,8 @@ app.get("/getRestaurants", function(req, res) {
 
 app.get("/getMenu/:resID", function (req, res) {
   const array = [];
-  con.query("SELECT * FROM menu WHERE available = 1 and res_id = ?", [req.params.resID], function(err,rows,fields) {
+  con.query("SELECT * FROM menu WHERE available = 1 and res_id = ?", [resID], function(err,rows,fields) {
+    console.log(req.params);
     if (err) {
       throw err;
     } else {
@@ -202,9 +203,11 @@ app.get("/getMenu/:resID", function (req, res) {
         res.json({status: "fail"});
       } else {
         for (let i = 0;i < rows.length; i++) {
-          // if (available == 1) {
+          /*
+          if (available == 1) {
             array.push({item: rows[i].item, servings: rows[i].servings, ingredients: rows[i].ingredients, available: rows[i].available});
-          // }
+          }
+          */
           
         }
       }

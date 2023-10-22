@@ -67,16 +67,16 @@ const RestaurantMapView = ({navigation}: {navigation:any}) => {
     }
   };
 
-  const callServer = async (restaurantID) => {
+  const callServer = async (restaurant) => {
     try {
-      const response = await axios.get(`http://10.253.87.12:9007/getMenu/${restaurantID}`);
+      const response = await axios.get(`http://10.253.87.12:9007/getMenu/${restaurant.id}`);
       if (response.data.status === 'fail') {
         Alert.alert('No menu available for this restaurant', null, [{ text: 'OK' }]);
       } else {
         // Process the menu data as needed
         const menuData = response.data.menu;
         // Navigate to the 'MarkerDetails' screen, pass the restaurant and menu data
-        navigation.navigate('Markers', { restaurant: restaurants[restaurantID], menu: menuData });
+        navigation.navigate('Markers', { restaurant: restaurant, menu: menuData });
       }
     } catch (error) {
       console.error(error);
@@ -86,7 +86,7 @@ const RestaurantMapView = ({navigation}: {navigation:any}) => {
   const handleMarkerPress = async (restaurant) => {
     try {
       // Replace this with your code to fetch menu data for the restaurant
-      const menuData = await callServer(restaurant.id); // Assuming you have a function to fetch menu data
+      const menuData = await callServer(restaurant); // Assuming you have a function to fetch menu data
       navigation.navigate('Markers', { restaurant, menu: menuData });
     } catch (error) {
       console.error('Error fetching menu data:', error);
