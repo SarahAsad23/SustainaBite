@@ -24,7 +24,7 @@ const SignIn = ({navigation}: {navigation: any}) => {
               if (type == "restaurant") {
                 navigation.navigate('AddMenu');
               } else {
-                navigation.navigate('RestaurantTableView');
+                navigation.navigate('MapScreen');
               }
    }
   }).catch(error => console.log(error));

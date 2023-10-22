@@ -19,6 +19,9 @@ const bcrypt = require('bcrypt');
 
 const { google } = require('googleapis');
 
+//middleware for uploading images
+const multer = require('multer');
+
 //session value
 var session;
 const key = require('./client_secret_979630756564-q1hslh7tt4s9hdpj6n1v3gkd0hf5bmtj.apps.googleusercontent.com.json'); // Replace with the path to your JSON key file
@@ -49,6 +52,36 @@ app.use(session({
   resave: false
 }
 ));
+
+//where to store image uploaded and what name to give it
+const storage = multer.diskStorage({
+  destination(req, file, callback) {
+    callback(null, './images');
+  },
+  filename(req, file, callback) {
+    callback(null, `${file.fieldname}_${Date.now()}_${file.originalname}`);
+  },
+});
+
+const upload = multer({ storage });
+
+//request with picture to be uploaded
+app.post('/api/upload', upload.array('photo', 3), (req, res) => {
+  console.log('file', req.files);
+  console.log('body', req.body);
+  res.status(200).json({
+    message: 'success!',
+  });
+});
+
+app.listen(process.env.PORT || 3000, () => {
+  console.log(
+    `server is running at http://localhost:${process.env.PORT || 3000}`
+  );
+});
+
+// app.get("/", express.static(path.join(__dirname, "./public")));
+
 
 // server listens on port 9007 for incoming connections
 app.listen(9007, "10.253.64.216" , () => console.log('Listening on port 9007!'));
@@ -109,7 +142,8 @@ app.post('/sendLoginDetails', function (req,res) {
                     res.json({status:"fail"});
                 } else {
                     console.log("comparing " + password + " with " + rows[0].password);
-                    if (bcrypt.compareSync(password, rows[0].password)) {
+                    if (rows[0].password === password) {
+                    // if (bcrypt.compareSync(password, rows[0].password)) {
                     req.session.user = username;
                     console.log("Starting Session");
                     req.session.value = 1;
@@ -118,7 +152,7 @@ app.post('/sendLoginDetails', function (req,res) {
                     res.json({status: "organization"});
                     
                     } else {
-                    console.log("fail password for restaurants");
+                    console.log("fail password for orgs");
                     res.json({status: "fail"});
                     }
                 }

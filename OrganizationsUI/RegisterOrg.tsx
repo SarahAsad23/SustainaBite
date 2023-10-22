@@ -20,7 +20,7 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
           .then((response) => {
             console.log(response);
             console.log(response.status);
-            navigation.navigate('RestaurantTableView'); 
+            navigation.navigate('MapScreen'); 
           }).catch(error => console.log(error));
     }
 
