@@ -11,7 +11,7 @@ const client = new ImageAnnotatorClient({ keyFile });
 const analyzer = new MenuAnalyzer();
 
 // Perform text recognition on the image
-async function recognizeText() {
+export async function recognizeText() {
   try {
     const [result] = await client.textDetection(imagePath);
     const textAnnotations = result.textAnnotations;
