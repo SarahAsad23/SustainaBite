@@ -2,11 +2,9 @@ const MenuAnalyzer = require('./google');
 const { ImageAnnotatorClient } = require('@google-cloud/vision');
 const fs = require('fs');
 const keyFile = '../sustainabite-402702-824ad0d58774.json';
-
-// Replace 'path/to/your/image.jpg' with the path to the image you want to process
 const imagePath = '../assets/menu.png';
 
-// Initialize the client with your service account key
+// Initialize the client with service account key
 const client = new ImageAnnotatorClient({ keyFile });
 
 // Initialize the MenuAnalyzer
@@ -28,6 +26,13 @@ async function recognizeText() {
       analyzer.analyzeMenuText(recognizedText)
         .then((analysisResult) => {
           console.log(analysisResult)
+          for (const key in analysisResult) {
+            if (analysisResult.hasOwnProperty(key)) {
+              const value = analysisResult[key];
+              const ingredients = value.join(', ');
+              const sql = `INSERT INTO menu (item, ingredients) VALUES ('${key}', '${ingredients}')`;
+            }
+          }
         })
         .catch((analysisError) => {
           console.error('Error analyzing menu text:', analysisError);
@@ -42,3 +47,4 @@ async function recognizeText() {
 
 // Call the text recognition function
 recognizeText();
+
