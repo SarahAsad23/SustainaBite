@@ -202,9 +202,9 @@ app.get("/getMenu/:resID", function (req, res) {
         res.json({status: "fail"});
       } else {
         for (let i = 0;i < rows.length; i++) {
-          if (available == 1) {
+          // if (available == 1) {
             array.push({item: rows[i].item, servings: rows[i].servings, ingredients: rows[i].ingredients, available: rows[i].available});
-          }
+          // }
           
         }
       }
