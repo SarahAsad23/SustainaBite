@@ -28,14 +28,14 @@ const createFormData = (photo, body = {}) => {
 
 
 const AddMenu = ({ navigation }: { navigation: any }) => {
-  const [photo, setPhoto] = React.useState(null);
+  let [photo, setPhoto] = React.useState(null);
 
   const addImage = async () => {
-    let photo = await ImagePicker.launchImageLibraryAsync({
+    let photoo = await ImagePicker.launchImageLibraryAsync({
       allowsEditing: true,
       quality: 1,
     });
-    setPhoto(photo);
+    photo = photoo;
     }
 
   const handleUploadPhoto = () => {

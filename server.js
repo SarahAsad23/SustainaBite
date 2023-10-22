@@ -173,7 +173,7 @@ app.post("/postRegisterAccount/:type", function(req,res) {
 
 app.get("/getRestaurants", function(req, res) {
   const array = [];
-    con.query("SELECT name, address FROM restaurant_registration WHERE id = res_id AND res_id in (SELECT res_id FROM menu WHERE available = TRUE)", function(err,rows,fields) {
+    con.query("SELECT id, name, address FROM restaurant_registration WHERE id = res_id AND res_id in (SELECT res_id FROM menu WHERE available = TRUE)", function(err,rows,fields) {
       if(err) {
         res.json({status: "fail"});
         throw err;
@@ -183,7 +183,7 @@ app.get("/getRestaurants", function(req, res) {
             console.log("No entries found in restaurants");
             res.json({status: "fail"});
         } else {
-            for (let i = 0; i < rows; i++) {
+            for (let i = 0; i < rows.length; i++) {
               array.push(rows[i]);
             }
         }
@@ -191,6 +191,27 @@ app.get("/getRestaurants", function(req, res) {
       }
     })
 });
+
+app.get("/getMenu/:resID", function (req, res) {
+  const array = [];
+  con.query("SELECT * FROM menu WHERE available = TRUE and res_id = ?", [resID], function(err,rows,fields) {
+    if (err) {
+      throw err;
+    } else {
+      if (rows.length ==0) {
+        console.log("No menu found for that restaurant");
+        res.json({status: "fail"});
+      } else {
+        for (let i = 0;i < rows.length; i++) {
+          array.push({item: rows[i].item, servings: rows[i].servings, available: rows[i].available});
+        }
+      }
+      res.json({menu: array});
+    }
+  })
+});
+
+app.post("/postMenu")
 
 function registerAccount(req,res,reqBody, accType) {
     var name = reqBody.name;
