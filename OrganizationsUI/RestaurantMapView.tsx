@@ -76,18 +76,24 @@ const RestaurantMapView = ({navigation}: {navigation:any}) => {
         // Process the menu data as needed
         const menuData = response.data.menu;
         // Navigate to the 'MarkerDetails' screen, pass the restaurant and menu data
-        navigation.navigate('MarkerDetails', { restaurant: restaurants[restaurantID], menu: menuData });
+        navigation.navigate('Markers', { restaurant: restaurants[restaurantID], menu: menuData });
       }
     } catch (error) {
       console.error(error);
     }
   };
   
-  const handleMarkerPress = (restaurant) => {
-    // Navigate to a new screen, e.g., 'Markers', and pass the restaurant data as a parameter
-
-    navigation.navigate('Markers', { restaurant });
+  const handleMarkerPress = async (restaurant) => {
+    try {
+      // Replace this with your code to fetch menu data for the restaurant
+      const menuData = await callServer(restaurant.id); // Assuming you have a function to fetch menu data
+      navigation.navigate('Markers', { restaurant, menu: menuData });
+    } catch (error) {
+      console.error('Error fetching menu data:', error);
+      // Handle the error, e.g., show an error message
+    }
   };
+  
 
 
   return (
