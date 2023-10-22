@@ -26,13 +26,6 @@ async function recognizeText() {
       analyzer.analyzeMenuText(recognizedText)
         .then((analysisResult) => {
           console.log(analysisResult)
-          for (const key in analysisResult) {
-            if (analysisResult.hasOwnProperty(key)) {
-              const value = analysisResult[key];
-              const ingredients = value.join(', ');
-              const sql = `INSERT INTO menu (item, ingredients) VALUES ('${key}', '${ingredients}')`;
-            }
-          }
         })
         .catch((analysisError) => {
           console.error('Error analyzing menu text:', analysisError);
