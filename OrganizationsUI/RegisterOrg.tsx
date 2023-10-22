@@ -24,6 +24,10 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
           }).catch(error => console.log(error));
     }
 
+    const go = () => {
+      navigation.navigate('MapScreen');
+    }
+
   return (
     <View style={styles.container}>
       
@@ -73,7 +77,7 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
+      <TouchableOpacity style={styles.button} onPress={go}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </View>
