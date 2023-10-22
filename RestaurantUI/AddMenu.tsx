@@ -39,7 +39,7 @@ const AddMenu = ({ navigation }: { navigation: any }) => {
     }
 
   const handleUploadPhoto = () => {
-    fetch("http://10.253.64.216:9007/api/upload", {
+    fetch("http://10.253.87.12:9007/api/upload", {
       method: 'POST',
       body: createFormData(photo, { userId: '123' }),
     })

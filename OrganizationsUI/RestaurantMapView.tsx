@@ -12,7 +12,7 @@ const RestaurantMapView = () => {
 
   const getRes = async () => {
     try {
-      const response = await axios.get('http://10.253.64.216:9007/getRestaurants', {});
+      const response = await axios.get('http://10.253.87.12:9007/getRestaurants', {});
       console.log(response);
       if (response.data.status === 'fail') {
         Alert.alert('No restaurants nearby', null, [{ text: 'OK' }]);
@@ -77,7 +77,7 @@ const RestaurantMapView = () => {
           latitudeDelta: 0.0922,
           longitudeDelta: 0.0421,
         }}>
-          
+
         <Marker
         coordinate={{latitude: 42.3630543, longitude: -71.1263064}}
         title='Your Location'/>

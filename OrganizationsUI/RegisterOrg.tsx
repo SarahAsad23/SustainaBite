@@ -10,7 +10,7 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
   const [password, setPassword] = useState('');
 
   const handleSubmit = async () => {
-      axios.post("http://10.253.64.216:9007/postRegisterAccount/" + "organization", {
+      axios.post("http://10.253.87.12:9007/postRegisterAccount/" + "organization", {
             name: organizationName,
             address: address,
             username: username,
@@ -77,7 +77,7 @@ const RegisterOrg = ({ navigation }: { navigation: any }) => {
         />
       </View>
 
-      <TouchableOpacity style={styles.button} onPress={go}>
+      <TouchableOpacity style={styles.button} onPress={handleSubmit}>
         <Text style={styles.buttonText}>Submit</Text>
       </TouchableOpacity>
     </View>

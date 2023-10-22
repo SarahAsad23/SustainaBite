@@ -5,7 +5,7 @@ import axios from "axios";
 
 const RegisterRes = ({ navigation }: { navigation: any }) => {
   const handleSubmit = () => {
-     axios.get('http://10.253.64.216:9007/postRegisterAccount/' + "restaurant")
+     axios.get('http://10.253.87.12:9007/postRegisterAccount/' + "restaurant")
          .then(function(response) {
              // handle response
              if (response.data.status == "success") {
