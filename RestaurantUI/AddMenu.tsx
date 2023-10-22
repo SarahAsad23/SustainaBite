@@ -35,6 +35,7 @@ const AddMenu = ({ navigation }: { navigation: any }) => {
       allowsEditing: true,
       quality: 1,
     });
+    setPhoto(photo);
     }
 
   const handleUploadPhoto = () => {
