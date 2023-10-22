@@ -1,6 +1,7 @@
 import axios from "axios";
 import React, { useState } from "react";
 import { Text, View, TextInput, TouchableOpacity, StyleSheet } from "react-native";
+import axios from 'axios';
 
 const RegisterOrg = ({ navigation }: { navigation: any }) => {
   const [organizationName, setOrganizationName] = useState('');

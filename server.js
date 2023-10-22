@@ -1,8 +1,10 @@
 // include the express modules
 var express = require("express");
 
+
 // create an express application
 var app = express();
+
 const url = require('url');
 
 // helps in extracting the body portion of an incoming request stream
@@ -31,8 +33,6 @@ var con = mysql.createConnection({
   user: "test",               // replace with the database for the app
   password: "test",
   database: "sustainabite",
-  // replace with our database password
-  port: 3306
 });
 
 con.connect(function(err) {
@@ -176,10 +176,10 @@ function registerAccount(req,res,reqBody, accType) {
     var address = reqBody.address;
     var username = reqBody.username;
     var password = reqBody.password; 
-    var capacity;
+    var capacity = reqBody.capacity;
     if (accType == "restaurant") {
         con.query("INSERT INTO restaurant_registration (username, password, name, address) VALUES (?, ?, ?, ?)", [username, password, name, address],
-        function(err, rows, fields) {
+        function(err) {
             if(err) throw err;
             else {
               console.log("Inserted query!");
