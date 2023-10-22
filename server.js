@@ -193,7 +193,7 @@ app.get("/getRestaurants", function(req, res) {
 
 app.get("/getMenu/:resID", function (req, res) {
   const array = [];
-  con.query("SELECT * FROM menu WHERE available = 1 and res_id = ?", [resID], function(err,rows,fields) {
+  con.query("SELECT * FROM menu WHERE available = 1 and res_id = ?", [req.params.resID], function(err,rows,fields) {
     if (err) {
       throw err;
     } else {
